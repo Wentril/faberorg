@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block title %}Authenticated Page - FaberOrg{% endblock %}
+
+{% block content %}
+    <h1>Authenticated Page</h1>
+    <p>This page is only accessible to logged-in users.</p>
+    <p>Your email: {{ user.email }}</p>
+
+    {% if user.is_staff %}
+        <p><strong>You have admin privileges!</strong></p>
+    {% endif %}
+
+    <p><a href="{% url 'default' %}">Go to Home Page</a></p>
+{% endblock %}
