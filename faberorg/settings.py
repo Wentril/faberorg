@@ -148,6 +148,11 @@ OIDC_RP_CLIENT_ID = "faberorg"
 OIDC_RP_CLIENT_SECRET = "faberorg-client-secret" # TODO replace with your client secret
 OIDC_RP_SIGN_ALGO = "RS256"
 
+def custom_username_algo(email, claims):
+    return claims.get('preferred_username', email)
+
+OIDC_USERNAME_ALGO = custom_username_algo
+
 KEYCLOAK_DOMAIN = "keycloak.12137-a.fsid.cvut.cz"
 REALM_NAME = "faber"
 

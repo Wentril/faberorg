@@ -1,0 +1,17 @@
+[
+  {
+    "model": "auth.user",
+    "pk": 1,
+    "fields": {
+      "password": "!6d6fyA54UfXC8qqtTQUmxA0y3HgZ25c7FPi9gfxw",
+      "is_superuser": false,
+      "username": "testuser",
+      "first_name": "a",
+      "last_name": "a",
+      "email": "a@b.cz",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2025-10-19T19:09:01.911589Z"
+    }
+  }
+]

@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ topic.name }}{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'core:project_list' %}">Projects</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'core:project_detail' topic.working_group.project.pk %}">{{ topic.working_group.project.name }}</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'core:working_group_detail' topic.working_group.pk %}">{{ topic.working_group.name }}</a></li>
+            <li class="breadcrumb-item active">{{ topic.name }}</li>
+        </ol>
+    </nav>
+
+    <h1>{{ topic.name }}</h1>
+    {% if topic.description %}
+        <p class="lead">{{ topic.description }}</p>
+    {% endif %}
+
+    <div class="mt-4">
+        <p class="text-muted">Content and discussions for this topic will appear here.</p>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,24 @@
+[
+  {
+    "model": "core.project",
+    "pk": 1,
+    "fields": {
+      "name": "Faber Main Project",
+      "description": "Main project for Faber research collaboration",
+      "is_active": true,
+      "created_at": "2025-01-01T00:00:00Z",
+      "updated_at": "2025-01-01T00:00:00Z"
+    }
+  },
+  {
+    "model": "core.project",
+    "pk": 2,
+    "fields": {
+      "name": "lol",
+      "description": "lol",
+      "is_active": true,
+      "created_at": "2025-01-01T00:00:00Z",
+      "updated_at": "2025-01-01T00:00:00Z"
+    }
+  }
+]

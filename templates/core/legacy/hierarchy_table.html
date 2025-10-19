@@ -1,0 +1,89 @@
+{% extends 'base.html' %}
+
+{% block title %}Project Hierarchy{% endblock %}
+
+{% block content %}
+<div class="container-fluid mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h1>Project Hierarchy</h1>
+        <a href="{% url 'core:project_list' %}" class="btn btn-secondary">Card View</a>
+    </div>
+
+    {% if projects %}
+        <div class="table-responsive">
+            <table class="table table-striped table-hover">
+                <thead>
+                    <tr>
+                        <th>Project</th>
+                        <th>Working Group</th>
+                        <th>Topic</th>
+                        <th>Description</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for project in projects %}
+                        {% if project.working_groups.exists %}
+                            {% for wg in project.working_groups.all %}
+                                {% if wg.topics.exists %}
+                                    {% for topic in wg.topics.all %}
+                                        <tr>
+                                            {% if forloop.first and forloop.parentloop.first %}
+                                                <td rowspan="{{ project.working_groups.count|add:project.working_groups.all|length }}" class="align-middle fw-bold">
+                                                    <a href="{% url 'core:project_detail' project.pk %}">{{ project.name }}</a>
+                                                </td>
+                                            {% endif %}
+                                            {% if forloop.first %}
+                                                <td rowspan="{{ wg.topics.count }}" class="align-middle">
+                                                    <a href="{% url 'core:working_group_detail' wg.pk %}">{{ wg.name }}</a>
+                                                </td>
+                                            {% endif %}
+                                            <td>
+                                                <a href="{% url 'core:topic_detail' topic.pk %}">{{ topic.name }}</a>
+                                            </td>
+                                            <td>{{ topic.description|default:"-" }}</td>
+                                            <td>
+                                                <a href="{% url 'core:topic_detail' topic.pk %}" class="btn btn-sm btn-outline-primary">View</a>
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                {% else %}
+                                    <tr>
+                                        {% if forloop.first %}
+                                            <td rowspan="{{ project.working_groups.count }}" class="align-middle fw-bold">
+                                                <a href="{% url 'core:project_detail' project.pk %}">{{ project.name }}</a>
+                                            </td>
+                                        {% endif %}
+                                        <td>
+                                            <a href="{% url 'core:working_group_detail' wg.pk %}">{{ wg.name }}</a>
+                                        </td>
+                                        <td class="text-muted">-</td>
+                                        <td>{{ wg.description|default:"-" }}</td>
+                                        <td>
+                                            <a href="{% url 'core:working_group_detail' wg.pk %}" class="btn btn-sm btn-outline-primary">View</a>
+                                        </td>
+                                    </tr>
+                                {% endif %}
+                            {% endfor %}
+                        {% else %}
+                            <tr>
+                                <td class="fw-bold">
+                                    <a href="{% url 'core:project_detail' project.pk %}">{{ project.name }}</a>
+                                </td>
+                                <td class="text-muted">-</td>
+                                <td class="text-muted">-</td>
+                                <td>{{ project.description|default:"-" }}</td>
+                                <td>
+                                    <a href="{% url 'core:project_detail' project.pk %}" class="btn btn-sm btn-outline-primary">View</a>
+                                </td>
+                            </tr>
+                        {% endif %}
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% else %}
+        <div class="alert alert-info">No projects found.</div>
+    {% endif %}
+</div>
+{% endblock %}

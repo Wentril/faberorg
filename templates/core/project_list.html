@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block title %}Projects{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h1>Projects</h1>
+
+    {% if projects %}
+        <div class="list-group">
+            {% for project in projects %}
+                <a href="{% url 'core:project_detail' project.pk %}" class="list-group-item list-group-item-action">
+                    <div class="d-flex w-100 justify-content-between">
+                        <h5 class="mb-1">{{ project.name }}</h5>
+                        <small>{{ project.working_groups.count }} working groups</small>
+                    </div>
+                    {% if project.description %}
+                        <p class="mb-1">{{ project.description }}</p>
+                    {% endif %}
+                </a>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p>No active projects found.</p>
+    {% endif %}
+</div>
+{% endblock %}

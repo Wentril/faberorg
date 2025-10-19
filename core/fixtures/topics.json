@@ -1,0 +1,211 @@
+[
+  {
+    "model": "core.topic",
+    "pk": 1,
+    "fields": {
+      "working_group": 1,
+      "name": "1.1 - Parameters",
+      "description": "Define and maintain parameters for data management",
+      "created_at": "2025-01-01T00:00:00Z",
+      "updated_at": "2025-01-01T00:00:00Z"
+    }
+  },
+  {
+    "model": "core.topic",
+    "pk": 2,
+    "fields": {
+      "working_group": 1,
+      "name": "1.2 - Data test record",
+      "description": "Manage data test records",
+      "created_at": "2025-01-01T00:00:00Z",
+      "updated_at": "2025-01-01T00:00:00Z"
+    }
+  },
+  {
+    "model": "core.topic",
+    "pk": 3,
+    "fields": {
+      "working_group": 1,
+      "name": "1.3 - Interface to DB",
+      "description": "Database interface management",
+      "created_at": "2025-01-01T00:00:00Z",
+      "updated_at": "2025-01-01T00:00:00Z"
+    }
+  },
+  {
+    "model": "core.topic",
+    "pk": 4,
+    "fields": {
+      "working_group": 1,
+      "name": "1.4 - Data processing routines",
+      "description": "Data processing and transformation routines",
+      "created_at": "2025-01-01T00:00:00Z",
+      "updated_at": "2025-01-01T00:00:00Z"
+    }
+  },
+  {
+    "model": "core.topic",
+    "pk": 5,
+    "fields": {
+      "working_group": 2,
+      "name": "2.1 - Deterministic vs Probabilistic",
+      "description": "Analysis of deterministic versus probabilistic approaches",
+      "created_at": "2025-01-01T00:00:00Z",
+      "updated_at": "2025-01-01T00:00:00Z"
+    }
+  },
+  {
+    "model": "core.topic",
+    "pk": 6,
+    "fields": {
+      "working_group": 2,
+      "name": "2.2 - Benchmark treating",
+      "description": "Benchmark treatment methodologies",
+      "created_at": "2025-01-01T00:00:00Z",
+      "updated_at": "2025-01-01T00:00:00Z"
+    }
+  },
+  {
+    "model": "core.topic",
+    "pk": 7,
+    "fields": {
+      "working_group": 2,
+      "name": "2.3 - AI deployment",
+      "description": "AI deployment strategies for fatigue analysis",
+      "created_at": "2025-01-01T00:00:00Z",
+      "updated_at": "2025-01-01T00:00:00Z"
+    }
+  },
+  {
+    "model": "core.topic",
+    "pk": 8,
+    "fields": {
+      "working_group": 4,
+      "name": "4.1 - Mean stress effect",
+      "description": "Analysis of mean stress effects on fatigue",
+      "created_at": "2025-01-01T00:00:00Z",
+      "updated_at": "2025-01-01T00:00:00Z"
+    }
+  },
+  {
+    "model": "core.topic",
+    "pk": 9,
+    "fields": {
+      "working_group": 4,
+      "name": "4.2 - Critical volume / Size effect",
+      "description": "Critical volume and size effects in fatigue estimation",
+      "created_at": "2025-01-01T00:00:00Z",
+      "updated_at": "2025-01-01T00:00:00Z"
+    }
+  },
+  {
+    "model": "core.topic",
+    "pk": 10,
+    "fields": {
+      "working_group": 4,
+      "name": "4.3 - Multiaxial loading",
+      "description": "Multiaxial loading scenarios and analysis",
+      "created_at": "2025-01-01T00:00:00Z",
+      "updated_at": "2025-01-01T00:00:00Z"
+    }
+  },
+  {
+    "model": "core.topic",
+    "pk": 11,
+    "fields": {
+      "working_group": 4,
+      "name": "4.4 - Surface integrity",
+      "description": "Surface integrity effects on fatigue performance",
+      "created_at": "2025-01-01T00:00:00Z",
+      "updated_at": "2025-01-01T00:00:00Z"
+    }
+  },
+  {
+    "model": "core.topic",
+    "pk": 12,
+    "fields": {
+      "working_group": 4,
+      "name": "4.5 - Damage accumulation",
+      "description": "Damage accumulation models and methodologies",
+      "created_at": "2025-01-01T00:00:00Z",
+      "updated_at": "2025-01-01T00:00:00Z"
+    }
+  },
+  {
+    "model": "core.topic",
+    "pk": 13,
+    "fields": {
+      "working_group": 4,
+      "name": "4.6 - Anisotropy",
+      "description": "Anisotropic material behavior in fatigue",
+      "created_at": "2025-01-01T00:00:00Z",
+      "updated_at": "2025-01-01T00:00:00Z"
+    }
+  },
+  {
+    "model": "core.topic",
+    "pk": 14,
+    "fields": {
+      "working_group": 4,
+      "name": "4.7 - Low-cycle fatigue",
+      "description": "Low-cycle fatigue analysis and estimation",
+      "created_at": "2025-01-01T00:00:00Z",
+      "updated_at": "2025-01-01T00:00:00Z"
+    }
+  },
+  {
+    "model": "core.topic",
+    "pk": 15,
+    "fields": {
+      "working_group": 5,
+      "name": "5.1 - Additive manufacturing",
+      "description": "Fatigue analysis for additive manufactured components",
+      "created_at": "2025-01-01T00:00:00Z",
+      "updated_at": "2025-01-01T00:00:00Z"
+    }
+  },
+  {
+    "model": "core.topic",
+    "pk": 16,
+    "fields": {
+      "working_group": 5,
+      "name": "5.2 - Contact problems",
+      "description": "Contact-related fatigue problems",
+      "created_at": "2025-01-01T00:00:00Z",
+      "updated_at": "2025-01-01T00:00:00Z"
+    }
+  },
+  {
+    "model": "core.topic",
+    "pk": 17,
+    "fields": {
+      "working_group": 5,
+      "name": "5.3 - Welded structures",
+      "description": "Fatigue analysis of welded structures",
+      "created_at": "2025-01-01T00:00:00Z",
+      "updated_at": "2025-01-01T00:00:00Z"
+    }
+  },
+  {
+    "model": "core.topic",
+    "pk": 18,
+    "fields": {
+      "working_group": 5,
+      "name": "5.4 - Riveted structures",
+      "description": "Fatigue analysis of riveted structures",
+      "created_at": "2025-01-01T00:00:00Z",
+      "updated_at": "2025-01-01T00:00:00Z"
+    }
+  },
+  {
+    "model": "core.topic",
+    "pk": 19,
+    "fields": {
+      "working_group": 5,
+      "name": "5.5 - Composite structures",
+      "description": "Fatigue analysis of composite structures",
+      "created_at": "2025-01-01T00:00:00Z",
+      "updated_at": "2025-01-01T00:00:00Z"
+    }
+  }
+]

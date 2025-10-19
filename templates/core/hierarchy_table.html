@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+{% load participation_tags %}
+
+{% block title %}Project Hierarchy{% endblock %}
+
+{% block content %}
+<div class="container-fluid mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h1>Project Hierarchy</h1>
+        <a href="{% url 'core:project_list' %}" class="btn btn-secondary">Card View</a>
+    </div>
+
+    {% if projects %}
+        <div class="table-responsive">
+            <table class="table table-striped table-hover">
+                <thead>
+                    <tr>
+                        <th>Project</th>
+                        <th>Working Group</th>
+                        <th>Topic</th>
+                        <th>Description</th>
+                        <th>Your Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for project in projects %}
+                        {% for wg in project.working_groups.all %}
+                            {% for topic in wg.topics.all %}
+                                <tr>
+                                    <td>{{ project.name }}</td>
+                                    <td>{{ wg.name }}</td>
+                                    <td>{{ topic.name }}</td>
+                                    <td>{{ topic.description|truncatewords:20 }}</td>
+                                    <td>
+                                        {% with status=topic|get_participation_status:request %}
+                                            {% if status %}
+                                                <span class="badge bg-success">{{ status }}</span>
+                                            {% else %}
+                                                <span class="badge bg-secondary">Not a member</span>
+                                            {% endif %}
+                                        {% endwith %}
+                                    </td>
+                                    <td>
+                                        <a href="{% url 'core:topic_detail' topic.pk %}" class="btn btn-sm btn-primary">View</a>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        {% endfor %}
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% else %}
+        <div class="alert alert-info">No projects found.</div>
+    {% endif %}
+</div>
+{% endblock %}

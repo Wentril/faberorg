@@ -8,6 +8,8 @@
     {% if user.is_authenticated %}
         <p>You are logged in and can access protected content.</p>
         <p><a href="{% url 'authenticated' %}">Go to Authenticated Page</a></p>
+        <h1>Projects</h1>
+        <a href="{% url 'core:project_list' %}" class="btn btn-secondary">Project list</a>
     {% else %}
         <p>This is a public page. Please log in to access more features.</p>
     {% endif %}
