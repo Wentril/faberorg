@@ -15,12 +15,12 @@ spec:
     spec:
       containers:
       - name: web
-        image: your-registry/faberorg:latest # TODO
+        image: ghcr.io/wentril/faberorg/faberorg:v0.0.0
         ports:
         - containerPort: 8000
         envFrom:
         - secretRef:
-            name: faberorg-secret
+            name: faberorg-env
         resources:
           requests:
             memory: "256Mi"
@@ -28,3 +28,5 @@ spec:
           limits:
             memory: "512Mi"
             cpu: "500m"
+      imagePullSecrets:
+        - name: ghcr-login-secret
