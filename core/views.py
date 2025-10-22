@@ -8,6 +8,13 @@ from django.views.decorators.http import require_http_methods
 from django.shortcuts import render, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from .models import Project, WorkingGroup, Topic
+from django.http import JsonResponse
+from django.views.decorators.http import require_POST
+from django.db import transaction
+from .models import WorkingGroupMembership, TopicMembership
+from django.contrib.auth import get_user_model
+
+User = get_user_model()
 
 
 def index(request):
@@ -159,3 +166,119 @@ def project_participation_table(request):
         'user_keycloak_id': user_keycloak_id,
     }
     return render(request, 'core/project_participation_table.html', context)
+
+
+@require_POST
+@login_required
+def toggle_participation(request):
+    """Toggle user's participation level in a working group or topic"""
+    user = request.user
+    entity_type = request.POST.get('entity_type')  # 'working_group' or 'topic'
+    entity_id = request.POST.get('entity_id')
+    action = request.POST.get('action')  # 'subscribe', 'contribute', or 'unassign'
+
+    try:
+        with transaction.atomic():
+            if entity_type == 'working_group':
+                membership, created = WorkingGroupMembership.objects.get_or_create(
+                    user=user,
+                    working_group_id=entity_id
+                )
+            elif entity_type == 'topic':
+                membership, created = TopicMembership.objects.get_or_create(
+                    user=user,
+                    topic_id=entity_id
+                )
+            else:
+                return JsonResponse({'success': False, 'error': 'Invalid entity type'}, status=400)
+
+            # Check if user is a leader (cannot modify their own leadership)
+            if membership.participation_level == 'leader':
+                return JsonResponse({
+                    'success': False,
+                    'error': 'Leaders cannot modify their own participation'
+                }, status=403)
+
+            if action == 'unassign':
+                membership.delete()
+                return JsonResponse({'success': True, 'new_level': None})
+            elif action == 'subscribe':
+                membership.participation_level = 'subscriber'
+                membership.save()
+                return JsonResponse({'success': True, 'new_level': 'subscriber'})
+            elif action == 'contribute':
+                membership.participation_level = 'contributor'
+                membership.save()
+                return JsonResponse({'success': True, 'new_level': 'contributor'})
+            else:
+                return JsonResponse({'success': False, 'error': 'Invalid action'}, status=400)
+
+    except Exception as e:
+        return JsonResponse({'success': False, 'error': str(e)}, status=500)
+
+@login_required
+def users_participation_matrix(request):
+    """
+    Build a matrix where columns are working groups and topics (topics appear after their WG)
+    and each row is a user with cell values 'S'/'C'/'L' or ''.
+    """
+    project_id = request.GET.get('project')
+    if not project_id:
+        return redirect('core:project_list')
+    project = get_object_or_404(Project, pk=project_id, is_active=True)
+
+    # Load all working groups with topics
+    working_groups = list(WorkingGroup.objects.prefetch_related('topics').order_by('name').all())
+
+    # Build ordered columns: first each WG, then its topics
+    columns = []
+    all_topic_ids = []
+    wg_ids = []
+    for wg_index, wg in enumerate(working_groups, 1):
+        columns.append({'type': 'wg', 'id': wg.id, 'name': wg.name, 'wg_index': wg_index})
+        wg_ids.append(wg.id)
+        for topic_index, topic in enumerate(wg.topics.all().order_by('name'), 1):
+            columns.append({
+                'type': 'topic',
+                'id': topic.id,
+                'name': f"{wg.name} / {topic.name}",
+                'wg_index': wg_index,
+                'topic_index': topic_index
+            })
+            all_topic_ids.append(topic.id)
+
+    # Fetch memberships in bulk and build lookup maps
+    wg_memberships = WorkingGroupMembership.objects.filter(working_group_id__in=wg_ids).select_related('user')
+    topic_memberships = TopicMembership.objects.filter(topic_id__in=all_topic_ids).select_related('user')
+
+    wg_map = {(m.user_id, m.working_group_id): m.participation_level for m in wg_memberships}
+    topic_map = {(m.user_id, m.topic_id): m.participation_level for m in topic_memberships}
+
+    # Map participation_level to single-letter
+    level_letter = {
+        'leader': 'L',
+        'contributor': 'C',
+        'subscriber': 'S'
+    }
+
+    # Build rows for each user
+    users = User.objects.order_by('username').all()
+    rows = []
+    for user in users:
+        statuses = []
+        for col in columns:
+            if col['type'] == 'wg':
+                lvl = wg_map.get((user.id, col['id']))
+            else:
+                lvl = topic_map.get((user.id, col['id']))
+            statuses.append(level_letter.get(lvl, ''))
+        rows.append({
+            'user': user,
+            'statuses': statuses
+        })
+
+    return render(request, 'core/users_participation_matrix.html', {
+        'project': project,
+        'columns': columns,
+        'rows': rows,
+    })

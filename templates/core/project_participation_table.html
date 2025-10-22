@@ -30,7 +30,7 @@
                             {% endif %}
                         </div>
                         <div class="text-end">
-                            <div class="mb-1">
+                            <div class="mb-2">
                                 <strong>Leader:</strong>
                                 {% if wg.leader_membership %}
                                     {{ wg.leader_membership.user.username }}
@@ -38,12 +38,34 @@
                                     <span class="text-white-50">No leader</span>
                                 {% endif %}
                             </div>
-                            <div>
+                            <div class="mb-2">
                                 <strong>Your Participation:</strong>
                                 {% if wg.user_membership %}
                                     {{ wg.user_membership.get_participation_level_display }}
                                 {% else %}
                                     <span class="text-white-50">Not participating</span>
+                                {% endif %}
+                            </div>
+                            <div class="btn-group btn-group-sm" role="group">
+                                {% if wg.user_membership and wg.user_membership.participation_level == 'leader' %}
+                                    Leader (cannot modify)
+                                {% else %}
+                                    <button onclick="toggleParticipation('working_group', {{ wg.id }}, 'subscribe', this)"
+                                            class="btn btn-sm btn-light"
+                                            {% if wg.user_membership and wg.user_membership.participation_level == 'subscriber' %}disabled{% endif %}>
+                                        Subscribe
+                                    </button>
+                                    <button onclick="toggleParticipation('working_group', {{ wg.id }}, 'contribute', this)"
+                                            class="btn btn-sm btn-success"
+                                            {% if wg.user_membership and wg.user_membership.participation_level == 'contributor' %}disabled{% endif %}>
+                                        Contribute
+                                    </button>
+                                    {% if wg.user_membership %}
+                                        <button onclick="toggleParticipation('working_group', {{ wg.id }}, 'unassign', this)"
+                                                class="btn btn-sm btn-danger">
+                                            Unassign
+                                        </button>
+                                    {% endif %}
                                 {% endif %}
                             </div>
                         </div>
@@ -58,6 +80,7 @@
                                     <th>Description</th>
                                     <th>Leader</th>
                                     <th>Your Participation</th>
+                                    <th>Actions</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -74,9 +97,33 @@
                                         </td>
                                         <td>
                                             {% if topic.user_membership %}
-                                                {{ topic.user_membership.get_participation_level_display }}
+                                                <span class="badge bg-info">{{ topic.user_membership.get_participation_level_display }}</span>
                                             {% else %}
                                                 <span class="text-muted">Not participating</span>
+                                            {% endif %}
+                                        </td>
+                                        <td>
+                                            {% if topic.user_membership and topic.user_membership.participation_level == 'leader' %}
+                                                Leader (cannot modify)
+                                            {% else %}
+                                                <div class="btn-group btn-group-sm" role="group">
+                                                    <button onclick="toggleParticipation('topic', {{ topic.id }}, 'subscribe', this)"
+                                                            class="btn btn-sm btn-outline-primary"
+                                                            {% if topic.user_membership and topic.user_membership.participation_level == 'subscriber' %}disabled{% endif %}>
+                                                        Subscribe
+                                                    </button>
+                                                    <button onclick="toggleParticipation('topic', {{ topic.id }}, 'contribute', this)"
+                                                            class="btn btn-sm btn-outline-success"
+                                                            {% if topic.user_membership and topic.user_membership.participation_level == 'contributor' %}disabled{% endif %}>
+                                                        Contribute
+                                                    </button>
+                                                    {% if topic.user_membership %}
+                                                        <button onclick="toggleParticipation('topic', {{ topic.id }}, 'unassign', this)"
+                                                                class="btn btn-sm btn-outline-danger">
+                                                            Unassign
+                                                        </button>
+                                                    {% endif %}
+                                                </div>
                                             {% endif %}
                                         </td>
                                     </tr>
@@ -93,4 +140,51 @@
         <div class="alert alert-info">No working groups found for this project.</div>
     {% endif %}
 </div>
+
+<script>
+function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].trim();
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+
+function toggleParticipation(entityType, entityId, action, buttonElement) {
+    const csrftoken = getCookie('csrftoken');
+
+    fetch('{% url "core:toggle_participation" %}', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+            'X-CSRFToken': csrftoken
+        },
+        body: new URLSearchParams({
+            'entity_type': entityType,
+            'entity_id': entityId,
+            'action': action
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            location.reload();
+        } else {
+            alert('Error: ' + data.error);
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('An error occurred. Please try again.');
+    });
+}
+</script>
+
 {% endblock %}

@@ -3,7 +3,7 @@
     "model": "core.workinggroupmembership",
     "pk": 1,
     "fields": {
-      "user": 1,
+      "user": 2,
       "working_group": 1,
       "participation_level": "leader",
       "created_at": "2025-01-01T00:00:00Z",
@@ -14,8 +14,53 @@
     "model": "core.workinggroupmembership",
     "pk": 2,
     "fields": {
-      "user": 1,
+      "user": 2,
+      "working_group": 2,
+      "participation_level": "leader",
+      "created_at": "2025-01-01T00:00:00Z",
+      "updated_at": "2025-01-01T00:00:00Z"
+    }
+  },
+    {
+    "model": "core.workinggroupmembership",
+    "pk": 3,
+    "fields": {
+      "user": 2,
       "working_group": 3,
+      "participation_level": "leader",
+      "created_at": "2025-01-01T00:00:00Z",
+      "updated_at": "2025-01-01T00:00:00Z"
+    }
+  },
+    {
+    "model": "core.workinggroupmembership",
+    "pk": 4,
+    "fields": {
+      "user": 2,
+      "working_group": 4,
+      "participation_level": "leader",
+      "created_at": "2025-01-01T00:00:00Z",
+      "updated_at": "2025-01-01T00:00:00Z"
+    }
+  },
+    {
+    "model": "core.workinggroupmembership",
+    "pk": 5,
+    "fields": {
+      "user": 2,
+      "working_group": 5,
+      "participation_level": "leader",
+      "created_at": "2025-01-01T00:00:00Z",
+      "updated_at": "2025-01-01T00:00:00Z"
+    }
+
+  },
+    {
+    "model": "core.workinggroupmembership",
+    "pk": 6,
+    "fields": {
+      "user": 2,
+      "working_group": 6,
       "participation_level": "leader",
       "created_at": "2025-01-01T00:00:00Z",
       "updated_at": "2025-01-01T00:00:00Z"

@@ -6,9 +6,24 @@
       "password": "!6d6fyA54UfXC8qqtTQUmxA0y3HgZ25c7FPi9gfxw",
       "is_superuser": false,
       "username": "testuser",
-      "first_name": "a",
-      "last_name": "a",
-      "email": "a@b.cz",
+      "first_name": "John",
+      "last_name": "Doe",
+      "email": "john.doe@example.com",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2025-10-19T19:09:01.911589Z"
+    }
+  },
+  {
+    "model": "auth.user",
+    "pk": 2,
+    "fields": {
+      "password": "!ZeJHE6bVbqYLP1G5Wio9R9oGYOEMhIcIeQ0uiUip",
+      "is_superuser": false,
+      "username": "papuga",
+      "first_name": "Jan",
+      "last_name": "Papuga",
+      "email": "jan.papuga@example.com",
       "is_staff": false,
       "is_active": true,
       "date_joined": "2025-10-19T19:09:01.911589Z"

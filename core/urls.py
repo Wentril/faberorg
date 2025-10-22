@@ -11,4 +11,6 @@ urlpatterns = [
     path('working-groups/<int:pk>/', views.working_group_detail, name='working_group_detail'),
     path('topics/<int:pk>/', views.topic_detail, name='topic_detail'),
     path('projects/participation/', views.project_participation_table, name='project_participation_table'),
+    path('toggle-participation/', views.toggle_participation, name='toggle_participation'),
+    path('users_matrix/', views.users_participation_matrix, name='users_participation_matrix'),
 ]

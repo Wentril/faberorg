@@ -14,8 +14,8 @@
     "model": "core.project",
     "pk": 2,
     "fields": {
-      "name": "lol",
-      "description": "lol",
+      "name": "Other Project",
+      "description": "Another research project",
       "is_active": true,
       "created_at": "2025-01-01T00:00:00Z",
       "updated_at": "2025-01-01T00:00:00Z"
