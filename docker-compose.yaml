@@ -9,8 +9,34 @@ services:
       - .env
     ports:
       - "8000:8000"
-    volumes:
-      - .:/app
     depends_on:
       postgres:
         condition: service_healthy
+    networks:
+      - faberorg-network
+
+  postgres:
+    image: postgres:latest
+    environment:
+      POSTGRES_USER: faberorg
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: faberorg
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U ${POSTGRES_USER}" ]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    restart: always
+    networks:
+      - faberorg-network
+
+networks:
+  faberorg-network:
+    driver: bridge
+
+volumes:
+  postgres_data:

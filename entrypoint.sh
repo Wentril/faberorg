@@ -10,7 +10,10 @@ echo "PostgreSQL is ready!"
 echo "Running migrations..."
 python manage.py migrate --noinput
 
-echo "Collecting static files..."
-python manage.py collectstatic --noinput --clear
+#echo "Collecting static files..."
+#python manage.py collectstatic --noinput --clear
+
+echo "Loading initial data..."
+python manage.py loaddata users projects working_groups topics user_memberships
 
 exec "$@"
