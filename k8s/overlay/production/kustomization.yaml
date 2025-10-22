@@ -1,0 +1,10 @@
+# k8s/overlay/production/kustomization.yaml
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+- ../../base
+
+images:
+- name: ghcr.io/wentril/faberorg/faberorg
+  newTag: v0.0.0
