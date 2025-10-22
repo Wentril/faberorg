@@ -1,39 +1,16 @@
 services:
-  postgres:
-    image: postgres:latest
-    environment:
-      POSTGRES_USER: faberorg
-      POSTGRES_PASSWORD: password
-      POSTGRES_DB: faberorg
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U faber"]
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: faberorg_web
+    command: ["gunicorn", "faberorg.wsgi:application", "--bind", "0.0.0.0:8000", "--workers", "3"]
+    env_file:
+      - .env
     ports:
-      - "5432:5432"
+      - "8000:8000"
     volumes:
-      - postgres_data:/var/lib/postgresql/data
-    restart: always
-
-#  mongo:
-#    image: mongo:latest
-#    ports:
-#      - "27017:27017"
-#    volumes:
-#      - mongo_data:/data/db
-#    environment:
-#      MONGO_INITDB_DATABASE: fatigue
-#
-#  mongo-express:
-#    image: mongo-express
-#    ports:
-#      - "8081:8081"
-#    environment:
-#      - ME_CONFIG_MONGODB_SERVER=mongo
-#      - ME_CONFIG_MONGODB_PORT=27017
-#      - ME_CONFIG_BASICAUTH_USERNAME=user
-#      - ME_CONFIG_BASICAUTH_PASSWORD=pass
-#    depends_on:
-#      - mongo
-
-volumes:
-#  mongo_data:
-  postgres_data:
+      - .:/app
+    depends_on:
+      postgres:
+        condition: service_healthy

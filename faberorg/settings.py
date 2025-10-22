@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/5.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.2/ref/settings/
 """
-
+import os
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -19,13 +19,15 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'secret-key-for-dev-only'  # TODO replace with your client secret
+# Security
+SECRET_KEY = os.environ.get('SECRET_KEY')
+if not SECRET_KEY:
+    raise ValueError("SECRET_KEY must be set in environment variables")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.environ.get('DEBUG', 'False').lower() in ('true', '1', 't')
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = os.environ.get('DJANGO_ALLOWED_HOSTS', 'localhost').split(',')
 
 
 # Application definition
@@ -78,11 +80,11 @@ WSGI_APPLICATION = 'faberorg.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'faberorg',
-        'USER': 'faberorg',
-        'PASSWORD': 'password',
-        'HOST': 'localhost',   # K8s service name for Postgres
-        'PORT': '5432',
+        'NAME': os.environ.get('POSTGRES_DB', 'faberorg'),
+        'USER': os.environ.get('POSTGRES_USER', 'faberorg'),
+        'PASSWORD': os.environ.get('POSTGRES_PASSWORD', 'password'),
+        'HOST': os.environ.get('DATABASE_HOST', 'localhost'),
+        'PORT': os.environ.get('DATABASE_PORT', '5432'),
     }
 }
 
@@ -144,26 +146,24 @@ LOGIN_URL = '/oidc/authenticate/'    # redirects to Keycloak
 LOGIN_REDIRECT_URL = '/'       # after successful login
 LOGOUT_REDIRECT_URL = '/'  # after logout
 
-OIDC_RP_CLIENT_ID = "faberorg"
-OIDC_RP_CLIENT_SECRET = "faberorg-client-secret" # TODO replace with your client secret
-OIDC_RP_SIGN_ALGO = "RS256"
+OIDC_RP_CLIENT_ID = os.environ.get('OIDC_RP_CLIENT_ID', 'faberorg')
+OIDC_RP_CLIENT_SECRET = os.environ.get('OIDC_RP_CLIENT_SECRET', 'change-me')
+OIDC_RP_SIGN_ALGO = os.environ.get('OIDC_RP_SIGN_ALGO', 'RS256')
+# Map username & email from Keycloak claims
+OIDC_RP_SCOPES = os.environ.get('OIDC_RP_SCOPES', "")
+# Store ID token in session
+OIDC_STORE_ID_TOKEN = os.environ.get('OIDC_STORE_ID_TOKEN', 'True').lower() in ('true', '1', 't')
 
 def custom_username_algo(email, claims):
     return claims.get('preferred_username', email)
 
 OIDC_USERNAME_ALGO = custom_username_algo
 
-KEYCLOAK_DOMAIN = "keycloak.12137-a.fsid.cvut.cz"
-REALM_NAME = "faber"
+KEYCLOAK_DOMAIN = os.environ.get('KEYCLOAK_DOMAIN', 'keycloak.example.com')
+REALM_NAME = os.environ.get('REALM_NAME', 'faber')
 
 OIDC_OP_AUTHORIZATION_ENDPOINT = f"https://{KEYCLOAK_DOMAIN}/realms/{REALM_NAME}/protocol/openid-connect/auth"
 OIDC_OP_TOKEN_ENDPOINT = f"https://{KEYCLOAK_DOMAIN}/realms/{REALM_NAME}/protocol/openid-connect/token"
 OIDC_OP_USER_ENDPOINT = f"https://{KEYCLOAK_DOMAIN}/realms/{REALM_NAME}/protocol/openid-connect/userinfo"
 OIDC_OP_JWKS_ENDPOINT = f"https://{KEYCLOAK_DOMAIN}/realms/{REALM_NAME}/protocol/openid-connect/certs"
 OIDC_OP_LOGOUT_ENDPOINT = f"https://{KEYCLOAK_DOMAIN}/realms/{REALM_NAME}/protocol/openid-connect/logout"
-
-# Map username & email from Keycloak claims
-OIDC_RP_SCOPES = "openid profile email"
-
-# Store ID token in session
-OIDC_STORE_ID_TOKEN = True
