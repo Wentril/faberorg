@@ -167,3 +167,13 @@ OIDC_OP_TOKEN_ENDPOINT = f"https://{KEYCLOAK_DOMAIN}/realms/{REALM_NAME}/protoco
 OIDC_OP_USER_ENDPOINT = f"https://{KEYCLOAK_DOMAIN}/realms/{REALM_NAME}/protocol/openid-connect/userinfo"
 OIDC_OP_JWKS_ENDPOINT = f"https://{KEYCLOAK_DOMAIN}/realms/{REALM_NAME}/protocol/openid-connect/certs"
 OIDC_OP_LOGOUT_ENDPOINT = f"https://{KEYCLOAK_DOMAIN}/realms/{REALM_NAME}/protocol/openid-connect/logout"
+
+# In your production settings (e.g., settings.py or production.py)
+SECURE_SSL_REDIRECT = True
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+
+# OIDC settings - ensure callback uses HTTPS
+OIDC_RP_CALLBACK_SCHEME = 'https'
+OIDC_CALLBACK_PROTOCOL = 'https'
