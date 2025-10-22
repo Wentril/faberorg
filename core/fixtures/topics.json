@@ -214,7 +214,7 @@
     "fields": {
       "working_group": 3,
       "name": "3.1 - FABEST",
-      "description": "Fatigue analysis of composite structures",
+      "description": "FABEST topic description",
       "created_at": "2025-01-01T00:00:00Z",
       "updated_at": "2025-01-01T00:00:00Z"
     }
@@ -225,7 +225,7 @@
     "fields": {
       "working_group": 6,
       "name": "6.1 - SW",
-      "description": "Fatigue analysis of composite structures",
+      "description": "SW topic description",
       "created_at": "2025-01-01T00:00:00Z",
       "updated_at": "2025-01-01T00:00:00Z"
     }
