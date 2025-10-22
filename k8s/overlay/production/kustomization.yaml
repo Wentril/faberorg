@@ -7,4 +7,4 @@ resources:
 
 images:
 - name: ghcr.io/wentril/faberorg/faberorg
-  newTag: v0.0.2
+  newTag: v0.0.3
